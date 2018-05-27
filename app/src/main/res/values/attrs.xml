@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="CustomView">
+    <attr name="cv_color" format="color"/>
+    <attr name="cv_normal" format="boolean"/>
+  </declare-styleable>
+</resources>
