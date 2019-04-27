@@ -1,0 +1,1 @@
+fork [ThinRPlugin](https://github.com/meili/ThinRPlugin) for AGP 3.0

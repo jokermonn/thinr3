@@ -46,24 +46,24 @@ class ASMHelper {
     JarFile jarFile = new JarFile(jar)
     new JarOutputStream(new FileOutputStream(newFile)).withStream { OutputStream jarOutputStream ->
       jarFile.entries()
-          .grep { JarEntry entry -> entry.name.endsWith(".class") }
           .each { JarEntry entry ->
         jarFile.getInputStream(entry).withStream { InputStream inputStream ->
           ZipEntry zipEntry = new ZipEntry(entry.name)
           def fileBytes = inputStream.bytes
 
-          switch (entry) {
-            case { isRFileExceptStyleable(entry.name) }:
-              fileBytes = null
-              break
-            case { isRFile(entry.name) }:
-              fileBytes = deleteRInfo(fileBytes)
-              break
-            default:
-              fileBytes = replaceRInfo(fileBytes)
-              break
+          if (entry.name.endsWith(".class")) {
+            switch (entry) {
+              case { isRFileExceptStyleable(entry.name) }:
+                fileBytes = null
+                break
+              case { isRFile(entry.name) }:
+                fileBytes = deleteRInfo(fileBytes)
+                break
+              default:
+                fileBytes = replaceRInfo(fileBytes)
+                break
+            }
           }
-
           if (fileBytes != null) {
             jarOutputStream.putNextEntry(zipEntry)
             jarOutputStream.write(fileBytes)
